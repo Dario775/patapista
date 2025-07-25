@@ -3,7 +3,7 @@ FROM node:18-alpine
 
 WORKDIR /app
 COPY package.json package-lock.json* pnpm-lock.yaml* ./
-RRUN npm install -g pnpm && pnpm install
+RUN npm install -g pnpm && pnpm install
 
 COPY . .
 RUN pnpm run build        # compila Next.js
