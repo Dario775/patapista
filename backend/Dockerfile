@@ -3,7 +3,7 @@ FROM node:18-alpine
 
 WORKDIR /app
 COPY package.json package-lock.json* pnpm-lock.yaml* ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+RUN npm install -g pnpm && pnpm install
 
 COPY . .
 RUN pnpm prisma generate
