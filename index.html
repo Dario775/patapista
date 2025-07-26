@@ -1,0 +1,1162 @@
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PATAPISTA - Sistema de Rastreo de Mascotas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --accent-color: #FFE66D;
+            --dark-color: #2C3E50;
+            --light-color: #F8F9FA;
+            --success-color: #00D9A3;
+            --danger-color: #FF4757;
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+        }
+
+        /* Header */
+        .header {
+            background: var(--gradient);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-menu a:hover {
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f8f9fa" width="1200" height="600"/><path fill="%23FF6B6B" d="M0 300L50 325L100 300L150 275L200 300L250 325L300 300L350 275L400 300L450 325L500 300L550 275L600 300L650 325L700 300L750 275L800 300L850 325L900 300L950 275L1000 300L1050 325L1100 300L1150 275L1200 300V600H0V300Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Quick Search Section */
+        .quick-search {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: -50px auto 50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .quick-search h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 2rem;
+            background: var(--light-color);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Forms */
+        .form-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        /* Profile Section */
+        .profile-section {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+
+        .pets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .pet-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .pet-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pet-card-header {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .pet-card-body {
+            padding: 1.5rem;
+        }
+
+        .pet-status {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .status-safe {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .status-lost {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* QR Generator */
+        .qr-generator {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .qr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--light-color);
+            border-radius: 10px;
+        }
+
+        .qr-item {
+            text-align: center;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 10px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .features-container {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            animation: fadeIn 0.3s;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo" onclick="showSection('home')">
+                🐾 PATAPISTA
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showSection('home')">Inicio</a></li>
+                <li><a href="#" onclick="showSection('login')">Iniciar Sesión</a></li>
+                <li><a href="#" onclick="showSection('register')">Registrarse</a></li>
+                <li><a href="#" onclick="showSection('search')">Buscar Mascota</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section">
+            <div class="hero">
+                <h1>Protege a tu mascota con PATAPISTA</h1>
+                <p>Sistema inteligente de rastreo por código QR</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="#" class="btn btn-primary" onclick="showSection('register')">Registrar mi Mascota</a>
+                    <a href="#" class="btn btn-secondary" onclick="showSection('search')">Encontré una Mascota</a>
+                </div>
+            </div>
+
+            <div class="quick-search">
+                <h2>¿Encontraste una mascota?</h2>
+                <p style="text-align: center; margin-bottom: 1.5rem;">Ingresa el código QR para contactar al dueño</p>
+                <form class="search-form" onsubmit="searchPet(event)">
+                    <div class="input-group">
+                        <i>🔍</i>
+                        <input type="text" placeholder="Ingresa el código QR" id="qrSearchInput">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Buscar Mascota</button>
+                </form>
+            </div>
+
+            <div class="features">
+                <h2 style="text-align: center; margin-bottom: 3rem; color: var(--dark-color);">¿Cómo funciona PATAPISTA?</h2>
+                <div class="features-container">
+                    <div class="feature-card fade-in">
+                        <i>📱</i>
+                        <h3>Registro Fácil</h3>
+                        <p>Registra a tu mascota en minutos y recibe su código QR único</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <i>🏷️</i>
+                        <h3>Medalla con QR</h3>
+                        <p>Coloca el código QR en la medalla de tu mascota</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <i>🔍</i>
+                        <h3>Búsqueda Instantánea</h3>
+                        <p>Quien encuentre a tu mascota podrá contactarte al instante</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <i>🛡️</i>
+                        <p>Tus datos están protegidos y solo se muestran cuando es necesario</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <i>📍</i>
+                        <h3>Ubicación en Tiempo Real</h3>
+                        <p>Comparte tu ubicación para facilitar el encuentro</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <i>💚</i>
+                        <h3>Comunidad Pet Friendly</h3>
+                        <p>Miles de personas ayudando a reunir mascotas con sus familias</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section id="login" class="section" style="display: none;">
+            <div class="form-container">
+                <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 2rem;">Iniciar Sesión</h2>
+                <form onsubmit="login(event)">
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" required placeholder="tu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Ingresar</button>
+                    <p style="text-align: center; margin-top: 1rem;">
+                        ¿No tienes cuenta? <a href="#" onclick="showSection('register')" style="color: var(--primary-color);">Regístrate aquí</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Register Section -->
+        <section id="register" class="section" style="display: none;">
+            <div class="form-container" style="max-width: 800px;">
+                <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 2rem;">Registro de Usuario</h2>
+                <form onsubmit="register(event)">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Nombres</label>
+                            <input type="text" required placeholder="Juan Carlos">
+                        </div>
+                        <div class="form-group">
+                            <label>Apellidos</label>
+                            <input type="text" required placeholder="Pérez García">
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Teléfono Principal</label>
+                            <input type="tel" required placeholder="+57 300 123 4567">
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono Alternativo</label>
+                            <input type="tel" placeholder="+57 301 234 5678">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" required placeholder="tu@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" required placeholder="••••••••">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Calle</label>
+                            <input type="text" required placeholder="Calle 123">
+                        </div>
+                        <div class="form-group">
+                            <label>Barrio</label>
+                            <input type="text" required placeholder="Centro">
+                        </div>
+                        <div class="form-group">
+                            <label>Localidad</label>
+                            <input type="text" required placeholder="Santa Rosa">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Foto de Perfil</label>
+                        <input type="file" accept="image/*">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 2rem;">Crear Cuenta</button>
+
+                    <div style="background: var(--light-color); padding: 2rem; border-radius: 15px;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Agregar Mascota</h3>
+                        <button type="button" class="btn btn-secondary" onclick="showAddPetModal()">+ Agregar Mascota</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <section id="search" class="section" style="display: none;">
+            <div class="form-container">
+                <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 2rem;">Buscar Mascota Encontrada</h2>
+                <form onsubmit="searchPet(event)">
+                    <div class="form-group">
+                        <label>Código QR de la Mascota</label>
+                        <input type="text" required placeholder="Ingresa el código QR">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Buscar</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section profile-section">
+            <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <div>
+                    <h2>Juan Carlos Pérez García</h2>
+                    <p>📧 juan@email.com | 📱 +57 300 123 4567</p>
+                    <p>📍 Calle 123, Centro, Santa Rosa</p>
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 2rem; color: var(--dark-color);">Mis Mascotas</h3>
+            <div class="pets-grid">
+                <div class="pet-card">
+                    <div class="pet-card-header">
+                        <h3>Max</h3>
+                    </div>
+                    <div class="pet-card-body">
+                        <p><strong>Raza:</strong> Golden Retriever</p>
+                        <p><strong>Color:</strong> Dorado</p>
+                        <p><strong>Tamaño:</strong> Grande</p>
+                        <p><strong>QR:</strong> PTT-001234</p>
+                        <span class="pet-status status-safe">En Casa</span>
+                        <div style="margin-top: 1rem;">
+                            <button class="btn btn-secondary" style="font-size: 0.9rem;">Editar</button>
+                            <button class="btn btn-primary" style="font-size: 0.9rem;">Reportar Perdido</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel -->
+        <section id="admin" class="section admin-panel">
+            <h2 style="color: var(--dark-color); margin-bottom: 2rem;">Panel de Administración</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>1,234</h3>
+                    <p>Usuarios Activos</p>
+                </div>
+                <div class="stat-card">
+                    <h3>5,678</h3>
+                    <p>QR Generados</p>
+                </div>
+                <div class="stat-card">
+                    <h3>3,456</h3>
+                    <p>Mascotas Registradas</p>
+                </div>
+                <div class="stat-card">
+                    <h3>89%</h3>
+                    <p>Mascotas Encontradas</p>
+                </div>
+            </div>
+
+            <div class="qr-generator">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem;">Generador de Códigos QR</h3>
+                <form onsubmit="generateQR(event)">
+                    <div class="form-group">
+                        <label>Cantidad de QR a generar</label>
+                        <input type="number" min="1" max="50" value="10" id="qrQuantity">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Generar QR</button>
+                </form>
+                <div id="qrDisplay" class="qr-grid" style="display: none;"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 PATAPISTA - Sistema de Rastreo de Mascotas</p>
+        <p>Protegiendo a las mascotas y uniendo familias 🐾</p>
+    </footer>
+
+    <!-- Add Pet Modal -->
+    <div id="addPetModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 style="color: var(--primary-color); margin-bottom: 2rem;">Agregar Nueva Mascota</h2>
+            <form onsubmit="addPet(event)">
+                <div class="form-group">
+                    <label>Código QR de la Mascota</label>
+                    <input type="text" required placeholder="PTT-XXXXXX">
+                </div>
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" required placeholder="Max">
+                </div>
+                <div class="form-group">
+                    <label>Raza</label>
+                    <input type="text" required placeholder="Golden Retriever">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Color</label>
+                        <input type="text" required placeholder="Dorado">
+                    </div>
+                    <div class="form-group">
+                        <label>Tamaño</label>
+                        <select required>
+                            <option value="">Seleccionar</option>
+                            <option value="pequeño">Pequeño</option>
+                            <option value="mediano">Mediano</option>
+                            <option value="grande">Grande</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Peso (kg)</label>
+                    <input type="number" step="0.1" placeholder="25.5">
+                </div>
+                <div class="form-group">
+                    <label>¿Está castrado?</label>
+                    <select required>
+                        <option value="">Seleccionar</option>
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>¿Está en tratamiento?</label>
+                    <select required>
+                        <option value="">Seleccionar</option>
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cuidados Especiales</label>
+                    <textarea rows="3" placeholder="Alergias, medicamentos, etc."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Observaciones</label>
+                    <textarea rows="3" placeholder="Información adicional importante"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Fotos de la Mascota (máximo 2)</label>
+                    <input type="file" accept="image/*" multiple>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Agregar Mascota</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Database simulation
+        const db = {
+            users: [],
+            pets: [],
+            qrCodes: ['PTT-001234', 'PTT-001235', 'PTT-001236'],
+            currentUser: null,
+            adminCredentials: {
+                username: 'admin',
+                password: 'patapista2024'
+            }
+        };
+
+        // Show section function
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // Special handling for admin login
+            if (sectionId === 'admin') {
+                const adminUser = prompt('Usuario de administrador:');
+                const adminPass = prompt('Contraseña de administrador:');
+                
+                if (adminUser === db.adminCredentials.username && adminPass === db.adminCredentials.password) {
+                    document.getElementById('admin').style.display = 'block';
+                } else {
+                    alert('Credenciales incorrectas');
+                    showSection('home');
+                }
+            }
+        }
+
+        // Login function
+        function login(event) {
+            event.preventDefault();
+            const email = event.target[0].value;
+            const password = event.target[1].value;
+            
+            // Simulate login
+            const user = db.users.find(u => u.email === email);
+            if (user) {
+                db.currentUser = user;
+                showSection('profile');
+                updateProfileDisplay();
+            } else {
+                alert('Usuario no encontrado. Por favor regístrate primero.');
+            }
+        }
+
+        // Register function
+        function register(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            
+            const newUser = {
+                id: Date.now(),
+                name: formData.get('name'),
+                email: event.target[4].value,
+                phone: event.target[2].value,
+                address: `${event.target[6].value}, ${event.target[7].value}, ${event.target[8].value}`,
+                pets: []
+            };
+            
+            db.users.push(newUser);
+            db.currentUser = newUser;
+            
+            alert('¡Registro exitoso! Ahora puedes agregar tus mascotas.');
+            showSection('profile');
+            updateProfileDisplay();
+        }
+
+        // Search pet function
+        function searchPet(event) {
+            event.preventDefault();
+            const qrCode = event.target[0].value.toUpperCase();
+            
+            // Find pet in database
+            const pet = db.pets.find(p => p.qr === qrCode);
+            
+            if (pet) {
+                const owner = db.users.find(u => u.pets.includes(pet.id));
+                if (owner) {
+                    showPetInfo(pet, owner);
+                } else {
+                    alert('Mascota encontrada pero sin dueño registrado.');
+                }
+            } else {
+                alert('Código QR no encontrado. Verifica el código e intenta nuevamente.');
+            }
+        }
+
+        // Show pet info
+        function showPetInfo(pet, owner) {
+            const info = `
+                <div class="modal" style="display: block;">
+                    <div class="modal-content">
+                        <span class="close" onclick="this.parentElement.parentElement.remove()">&times;</span>
+                        <h2 style="color: var(--primary-color);">¡Mascota Encontrada!</h2>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                            <div>
+                                <h3>Datos de la Mascota</h3>
+                                <p><strong>Nombre:</strong> ${pet.name}</p>
+                                <p><strong>Raza:</strong> ${pet.breed}</p>
+                                <p><strong>Color:</strong> ${pet.color}</p>
+                                <p><strong>Tamaño:</strong> ${pet.size}</p>
+                                ${pet.specialCare ? `<p><strong>Cuidados:</strong> ${pet.specialCare}</p>` : ''}
+                            </div>
+                            <div>
+                                <h3>Datos del Dueño</h3>
+                                <p><strong>Nombre:</strong> ${owner.name}</p>
+                                <p><strong>Teléfono:</strong> ${owner.phone}</p>
+                                <p><strong>Email:</strong> ${owner.email}</p>
+                                <p><strong>Dirección:</strong> ${owner.address}</p>
+                            </div>
+                        </div>
+                        <div style="margin-top: 2rem; text-align: center;">
+                            <a href="tel:${owner.phone}" class="btn btn-primary">Llamar al Dueño</a>
+                            <a href="mailto:${owner.email}" class="btn btn-secondary">Enviar Email</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', info);
+        }
+
+        // Add pet modal
+        function showAddPetModal() {
+            document.getElementById('addPetModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('addPetModal').style.display = 'none';
+        }
+
+        // Add pet function
+        function addPet(event) {
+            event.preventDefault();
+            const qrCode = event.target[0].value.toUpperCase();
+            
+            // Verify QR code exists
+            if (!db.qrCodes.includes(qrCode)) {
+                alert('Código QR no válido. El código no está registrado en el sistema.');
+                return;
+            }
+            
+            // Check if QR is already in use
+            if (db.pets.find(p => p.qr === qrCode)) {
+                alert('Este código QR ya está en uso.');
+                return;
+            }
+            
+            const newPet = {
+                id: Date.now(),
+                qr: qrCode,
+                name: event.target[1].value,
+                breed: event.target[2].value,
+                color: event.target[3].value,
+                size: event.target[4].value,
+                weight: event.target[5].value,
+                castrated: event.target[6].value,
+                inTreatment: event.target[7].value,
+                specialCare: event.target[8].value,
+                observations: event.target[9].value,
+                status: 'safe',
+                ownerId: db.currentUser?.id
+            };
+            
+            db.pets.push(newPet);
+            if (db.currentUser) {
+                db.currentUser.pets.push(newPet.id);
+            }
+            
+            alert('¡Mascota agregada exitosamente!');
+            closeModal();
+            updateProfileDisplay();
+        }
+
+        // Update profile display
+        function updateProfileDisplay() {
+            if (!db.currentUser) return;
+            
+            // Update profile header
+            const profileHeader = document.querySelector('.profile-header div:last-child');
+            profileHeader.innerHTML = `
+                <h2>${db.currentUser.name}</h2>
+                <p>📧 ${db.currentUser.email} | 📱 ${db.currentUser.phone}</p>
+                <p>📍 ${db.currentUser.address}</p>
+            `;
+            
+            // Update pets grid
+            const petsGrid = document.querySelector('.pets-grid');
+            petsGrid.innerHTML = '';
+            
+            db.currentUser.pets.forEach(petId => {
+                const pet = db.pets.find(p => p.id === petId);
+                if (pet) {
+                    petsGrid.innerHTML += `
+                        <div class="pet-card">
+                            <div class="pet-card-header">
+                                <h3>${pet.name}</h3>
+                            </div>
+                            <div class="pet-card-body">
+                                <p><strong>Raza:</strong> ${pet.breed}</p>
+                                <p><strong>Color:</strong> ${pet.color}</p>
+                                <p><strong>Tamaño:</strong> ${pet.size}</p>
+                                <p><strong>QR:</strong> ${pet.qr}</p>
+                                <span class="pet-status ${pet.status === 'safe' ? 'status-safe' : 'status-lost'}">
+                                    ${pet.status === 'safe' ? 'En Casa' : 'Perdido'}
+                                </span>
+                                <div style="margin-top: 1rem;">
+                                    <button class="btn btn-secondary" style="font-size: 0.9rem;" onclick="editPet(${pet.id})">Editar</button>
+                                    <button class="btn btn-primary" style="font-size: 0.9rem;" onclick="togglePetStatus(${pet.id})">
+                                        ${pet.status === 'safe' ? 'Reportar Perdido' : 'Marcar como Encontrado'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        // Toggle pet status
+        function togglePetStatus(petId) {
+            const pet = db.pets.find(p => p.id === petId);
+            if (pet) {
+                if (pet.status === 'safe') {
+                    const lostDate = prompt('¿Desde cuándo está perdida tu mascota? (DD/MM/AAAA)');
+                    if (lostDate) {
+                        pet.status = 'lost';
+                        pet.lostDate = lostDate;
+                        alert('Mascota reportada como perdida. ¡Esperamos que la encuentres pronto!');
+                    }
+                } else {
+                    pet.status = 'safe';
+                    delete pet.lostDate;
+                    alert('¡Qué alegría! Mascota marcada como encontrada.');
+                }
+                updateProfileDisplay();
+            }
+        }
+
+        // Generate QR codes
+        function generateQR(event) {
+            event.preventDefault();
+            const quantity = parseInt(document.getElementById('qrQuantity').value);
+            const qrDisplay = document.getElementById('qrDisplay');
+            
+            qrDisplay.innerHTML = '';
+            qrDisplay.style.display = 'grid';
+            
+            for (let i = 0; i < quantity; i++) {
+                const qrCode = `PTT-${String(Date.now() + i).slice(-6)}`;
+                db.qrCodes.push(qrCode);
+                
+                qrDisplay.innerHTML += `
+                    <div class="qr-item">
+                        <div style="width: 80px; height: 80px; background: var(--dark-color); margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">
+                            QR
+                        </div>
+                        <p style="font-size: 0.8rem; margin-top: 0.5rem;">${qrCode}</p>
+                    </div>
+                `;
+            }
+            
+            // Add export buttons
+            qrDisplay.innerHTML += `
+                <div style="grid-column: 1/-1; margin-top: 2rem; text-align: center;">
+                    <button class="btn btn-primary" onclick="window.print()">Imprimir</button>
+                    <button class="btn btn-secondary" onclick="exportToExcel()">Exportar a Excel</button>
+                    <button class="btn btn-secondary" onclick="shareQR()">Compartir</button>
+                </div>
+            `;
+        }
+
+        // Export to Excel simulation
+        function exportToExcel() {
+            alert('Exportando códigos QR a Excel...\nFuncionalidad en desarrollo.');
+        }
+
+        // Share QR
+        function shareQR() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Códigos QR PATAPISTA',
+                    text: 'Nuevos códigos QR generados',
+                    url: window.location.href
+                });
+            } else {
+                alert('Códigos QR copiados al portapapeles');
+            }
+        }
+
+        // Edit pet function
+        function editPet(petId) {
+            const pet = db.pets.find(p => p.id === petId);
+            if (pet) {
+                alert(`Editando mascota: ${pet.name}\nFuncionalidad en desarrollo.`);
+            }
+        }
+
+        // Initialize with sample data
+        function initializeSampleData() {
+            // Sample user
+            db.users.push({
+                id: 1,
+                name: 'Juan Carlos Pérez García',
+                email: 'juan@email.com',
+                phone: '+57 300 123 4567',
+                address: 'Calle 123, Centro, Santa Rosa',
+                pets: [1]
+            });
+            
+            // Sample pet
+            db.pets.push({
+                id: 1,
+                qr: 'PTT-001234',
+                name: 'Max',
+                breed: 'Golden Retriever',
+                color: 'Dorado',
+                size: 'grande',
+                weight: '30',
+                castrated: 'si',
+                inTreatment: 'no',
+                specialCare: '',
+                observations: 'Muy amigable con niños',
+                status: 'safe',
+                ownerId: 1
+            });
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            initializeSampleData();
+            showSection('home');
+        };
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('addPetModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
